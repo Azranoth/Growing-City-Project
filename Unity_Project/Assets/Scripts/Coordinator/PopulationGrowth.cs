@@ -20,6 +20,7 @@ public class PopulationGrowth : MonoBehaviour {
 			_GrowthTimer -= 1.0f * Time.deltaTime;
 		} else {
 			_Population += (1 + (int)(_Population / 10.0f));
+			this.GetComponent<RessourcesManagement>()._RessourceUsedPerTick [0] = _Population;
 			_GrowthTimer = GROWTH_DELAY;
 		}
 	}
