@@ -15,6 +15,18 @@ public class Buildings : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+
+		if (Input.GetKey (KeyCode.Alpha1)) {
+			_indexBuildings = 0;
+		}
+		if (Input.GetKey (KeyCode.Alpha2)) {
+			_indexBuildings = 1;
+		}
+		if (Input.GetKey (KeyCode.Alpha3)) {
+			_indexBuildings = 2;
+		}
+		if (Input.GetKey (KeyCode.Alpha4)) {
+			_indexBuildings = 3;
+		}
 	}
 }

@@ -21,10 +21,13 @@ public class PlacingBuildingOnTile : MonoBehaviour {
 
 	void OnMouseOver(){
 		if (Input.GetButtonDown ("mouse 1")) {
-			GameObject _PlacedBuilding = (GameObject) Instantiate(_Coordinator.GetComponent<Buildings>()._Buildings[_Coordinator.GetComponent<Buildings>()._indexBuildings],
-				new Vector3(transform.position.x, transform.position.y*(4/3), transform.position.z),
-				Quaternion.identity);
-			_PlacedBuilding.name = _Coordinator.GetComponent<Buildings> ()._Buildings [_Coordinator.GetComponent<Buildings> ()._indexBuildings].name;
+			if (!_blockedTile) {
+				_blockedTile = true;
+				GameObject _PlacedBuilding = (GameObject)Instantiate (_Coordinator.GetComponent<Buildings> ()._Buildings [_Coordinator.GetComponent<Buildings> ()._indexBuildings],
+					                            new Vector3 (transform.position.x, transform.position.y * (4 / 3), transform.position.z),
+					                            Quaternion.identity);
+				_PlacedBuilding.name = _Coordinator.GetComponent<Buildings> ()._Buildings [_Coordinator.GetComponent<Buildings> ()._indexBuildings].name;
+			}
 		}
 	}
 
