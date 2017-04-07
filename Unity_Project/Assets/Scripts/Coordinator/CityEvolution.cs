@@ -20,4 +20,11 @@ public class CityEvolution : MonoBehaviour {
 	void Update () {
 		
 	}
+
+	public void EvolveCity(){
+		_levelATM++;
+		/* MODEL EVOLVE */
+		//GameObject CityModel = GameObject.Find ("City");
+
+	}
 }

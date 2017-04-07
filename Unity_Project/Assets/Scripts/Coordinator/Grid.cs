@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Grid : MonoBehaviour {
 
-	private float Scale = 4.0f;			// Size of the grid's tiles.
-	private const int MAX_X = 30;		// Maximum value of X on the grid
-	private const int MAX_Y = 30;		// Maximum value of Y on the grid
+	public float Scale = 4.0f;			// Size of the grid's tiles.
+	public const int MAX_X = 30;		// Maximum value of X on the grid
+	public const int MAX_Y = 30;		// Maximum value of Y on the grid
+
 
 	public GameObject _Tile;	
 	//public GameObject _ObjToRemove;
