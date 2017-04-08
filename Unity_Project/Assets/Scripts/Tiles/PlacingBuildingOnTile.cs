@@ -6,6 +6,7 @@ public class PlacingBuildingOnTile : MonoBehaviour {
 
 	public GameObject _Coordinator;
 	public bool _blockedTile = false;
+	public string _blockType = "None";		// "Forest", "Ground" or "Water"
 
 
 	// Use this for initialization
