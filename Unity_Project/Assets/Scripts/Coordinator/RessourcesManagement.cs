@@ -24,12 +24,16 @@ public class RessourcesManagement : MonoBehaviour {
 			Debug.Log ("Produce " + _Production + ", Used " + amount + ", have " + _Amount);
 		}
 	}
+	/* ----- STATIC VARS -----*/
 	public static int _nbRessources = 1;
 	public static float TIME_BETWEEN_TICKS = 2.5f;
 
 	public Ressource[] _Ressources = new Ressource[_nbRessources];
+
 	public int[] _RessourceUsedPerTick = new int[_nbRessources];
 	public float _timerTicks = TIME_BETWEEN_TICKS;
+
+	public float _MaxDistance;
 
 	/*
 	 * 0 : food
@@ -39,6 +43,8 @@ public class RessourcesManagement : MonoBehaviour {
 	 */
 	// Use this for initialization
 	void Start () {
+
+		_MaxDistance = 1.0f;
 
 		// Creating ressources
 		_Ressources[0] = new Ressource("Food");

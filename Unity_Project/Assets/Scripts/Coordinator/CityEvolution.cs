@@ -10,15 +10,19 @@ public class CityEvolution : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		GameObject CityModel = (GameObject) Instantiate (_cityLevels [0], new Vector3 (0, 0, 0), Quaternion.identity);
-		CityModel.name = "City";
-		GameObject Tile = GameObject.Find ("GridTile(" + CityModel.transform.position.x + "," + CityModel.transform.position.z);
-		Tile.GetComponent<PlacingBuildingOnTile> ()._blockedTile = true;
+		
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
+	}
+
+	public void GeneratingCity(){
+		GameObject CityModel = (GameObject) Instantiate (_cityLevels [0], new Vector3 (0, 0, 0), Quaternion.identity);
+		CityModel.name = "City";
+		GameObject Tile = GameObject.Find ("GridTile(" + CityModel.transform.position.x + "," + CityModel.transform.position.z + ")");
+		Tile.GetComponent<PlacingBuildingOnTile> ()._blockedTile = true;
 	}
 
 	public void EvolveCity(){

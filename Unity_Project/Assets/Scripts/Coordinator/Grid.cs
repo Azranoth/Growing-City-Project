@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Grid : MonoBehaviour {
 
-	private float Scale = 4.0f;			// Size of the grid's tiles.
+	public float Scale = 4.0f;			// Size of the grid's tiles.
 	public int MAX_X = 30;		// Maximum value of X on the grid
 	public int MAX_Y = 30;		// Maximum value of Y on the grid
 
@@ -23,7 +23,7 @@ public class Grid : MonoBehaviour {
 
 			}
 		}
-		//this.GetComponent<ProceduralMapGeneration> ().MapProceduralGeneration ();
+		this.GetComponent<ProceduralMapGeneration> ().MapGeneration ();
 		this.GetComponent<CityEvolution> ().GeneratingCity ();
 	}
 	

@@ -22,7 +22,7 @@ public class PlacingBuildingOnTile : MonoBehaviour {
 
 	void OnMouseOver(){
 		if (Input.GetButtonDown ("mouse 1")) {
-			if (!_blockedTile) {
+			if (!_blockedTile && _blockType != "Water") {
 				_blockedTile = true;
 				GameObject _PlacedBuilding = (GameObject)Instantiate (_Coordinator.GetComponent<Buildings> ()._Buildings [_Coordinator.GetComponent<Buildings> ()._indexBuildings],
 					                            new Vector3 (transform.position.x, transform.position.y * (4 / 3), transform.position.z),
