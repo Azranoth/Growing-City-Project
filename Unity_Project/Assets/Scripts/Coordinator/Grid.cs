@@ -5,8 +5,8 @@ using UnityEngine;
 public class Grid : MonoBehaviour {
 
 	public float Scale = 4.0f;			// Size of the grid's tiles.
-	public int MAX_X = 30;		// Maximum value of X on the grid
-	public int MAX_Y = 30;		// Maximum value of Y on the grid
+	public int MAX_X = 50;		// Maximum value of X on the grid
+	public int MAX_Y = 50;		// Maximum value of Y on the grid
 
 	public GameObject _Tile;	
 	//public GameObject _ObjToRemove;

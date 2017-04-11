@@ -21,6 +21,11 @@ public class PopulationGrowth : MonoBehaviour {
 		} else {
 			_Population += (1 + (int)(_Population / 10.0f));
 			this.GetComponent<RessourcesManagement>()._RessourceUsedPerTick [0] = _Population;
+
+			if (_Population >= this.GetComponent<CityEvolution> ()._RequiredPopulationToEvolve [this.GetComponent<CityEvolution> ()._levelATM-1]) {
+				this.GetComponent<CityEvolution> ().EvolveCity ();
+			}
+				
 			_GrowthTimer = GROWTH_DELAY;
 		}
 	}

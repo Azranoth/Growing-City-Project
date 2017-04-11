@@ -10,6 +10,7 @@ public class ProceduralMapGeneration : MonoBehaviour {
 
 	public GameObject _MapBlocksParent;
 
+
 	//public float Scale;
 	public int MAX_X;
 	public int MAX_Y;
@@ -41,7 +42,7 @@ public class ProceduralMapGeneration : MonoBehaviour {
 
 	}
 
-	public int MapGeneration(){
+	public void MapGeneration(){
 
 		MAX_X = this.GetComponent<Grid> ().MAX_X;
 		MAX_Y = this.GetComponent<Grid> ().MAX_Y;
@@ -129,7 +130,30 @@ public class ProceduralMapGeneration : MonoBehaviour {
 				}
 			}
 		}
-		return 1;
+		/* --- Removing extra water blocks --- */
+		/*
+		bool onlyGround = true;
+		for (int i = 0; i < MAX_X; i++) {
+			for (int j = 0; j < MAX_Y; j++) {
+
+				RelativeTile = GameObject.Find ("GridTile(" + i + "," + j + ")");
+				if (RelativeTile.GetComponent<PlacingBuildingOnTile> ()._blockType == "Water") {
+					onlyGround = true;
+					for (int k = i + 1; k >= i - 1; k--) {
+						for (int h = j + 1; h >= j - 1; h--) {
+
+							if (GameObject.Find ("GridTile(" + k + "," + h + ")").GetComponent<PlacingBuildingOnTile> ()._blockType == "Water") {
+								onlyGround = false;
+							}
+						}
+					}
+					if (onlyGround == true) {
+						BlockInstantiation("Ground", i, j);
+					}
+				}
+			}
+		}
+		*/
 	}
 	
 	// Update is called once per frame
@@ -140,21 +164,29 @@ public class ProceduralMapGeneration : MonoBehaviour {
 	public void BlockInstantiation(string type, int x, int z){
 		GameObject RelativeTile = GameObject.Find ("GridTile(" + x + "," + z + ")");
 		if (RelativeTile != null) {
+			if (RelativeTile.GetComponent<PlacingBuildingOnTile> ()._blockType != null) {
+				Destroy (RelativeTile.GetComponent<PlacingBuildingOnTile> ()._Block.gameObject);
+				RelativeTile.GetComponent<PlacingBuildingOnTile> ()._blockType = null;
+			}
+				
 			if (type == "Forest") {
 				GameObject GeneratedBlock = (GameObject) Instantiate (_ForestBlock, new Vector3 (x*Scale, -1, z*Scale), Quaternion.identity);
 				RelativeTile.GetComponent<PlacingBuildingOnTile> ()._blockType = "Forest";
+				RelativeTile.GetComponent<PlacingBuildingOnTile> ()._Block = GeneratedBlock;
 				//RelativeTile.GetComponent<PlacingBuildingOnTile> ()._blockedTile = true;
 				GeneratedBlock.transform.parent = _MapBlocksParent.transform;
 			}
 			if (type == "Ground") {
 				GameObject GeneratedBlock = (GameObject) Instantiate (_GroundBlock, new Vector3 (x*Scale, -1, z*Scale), Quaternion.identity);
 				RelativeTile.GetComponent<PlacingBuildingOnTile> ()._blockType = "Ground";
+				RelativeTile.GetComponent<PlacingBuildingOnTile> ()._Block = GeneratedBlock;
 				//RelativeTile.GetComponent<PlacingBuildingOnTile> ()._blockedTile = true;
 				GeneratedBlock.transform.parent = _MapBlocksParent.transform;
 			}
 			if (type == "Water") {
 				GameObject GeneratedBlock = (GameObject) Instantiate (_WaterBlock, new Vector3 (x*Scale, -1, z*Scale), Quaternion.identity);
 				RelativeTile.GetComponent<PlacingBuildingOnTile> ()._blockType = "Water";
+				RelativeTile.GetComponent<PlacingBuildingOnTile> ()._Block = GeneratedBlock;
 				//RelativeTile.GetComponent<PlacingBuildingOnTile> ()._blockedTile = true;
 				GeneratedBlock.transform.parent = _MapBlocksParent.transform;
 			}

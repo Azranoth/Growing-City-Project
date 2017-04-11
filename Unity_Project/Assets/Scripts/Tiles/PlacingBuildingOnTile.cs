@@ -5,8 +5,13 @@ using UnityEngine;
 public class PlacingBuildingOnTile : MonoBehaviour {
 
 	public GameObject _Coordinator;
+	public GameObject _Block;
+
+
 	public bool _blockedTile = false;
 	public string _blockType = "None";		// "Forest", "Ground" or "Water"
+
+
 
 
 	// Use this for initialization
