@@ -21,7 +21,7 @@ public class RessourcesManagement : MonoBehaviour {
 			} else {
 				_Amount -= amount;
 			}
-			Debug.Log ("Produce " + _Production + ", Used " + amount + ", have " + _Amount);
+			Debug.Log ("Produce Rsc" + _Name + ": " + _Production + ", Used " + amount + ", have " + _Amount);
 		}
 	}
 	/* ----- STATIC VARS -----*/
@@ -48,9 +48,10 @@ public class RessourcesManagement : MonoBehaviour {
 
 		// Creating ressources
 		_Ressources[0] = new Ressource("Food");
-
 		_RessourceUsedPerTick [0] = this.GetComponent<PopulationGrowth> ()._Population;
-		//_RessourceUsedPerTick [1] = 0;
+
+		_Ressources [1] = new Ressource ("Wood");
+		_RessourceUsedPerTick [1] = 0;
 		//_RessourceUsedPerTick [2] = 0;
 		//_RessourceUsedPerTick [3] = 0;
 	}

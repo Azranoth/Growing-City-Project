@@ -27,12 +27,17 @@ public class PlacingBuildingOnTile : MonoBehaviour {
 
 	void OnMouseOver(){
 		if (Input.GetButtonDown ("mouse 1")) {
-			if (!_blockedTile && _blockType != "Water") {
+			if (!_blockedTile 
+				&& _blockType != "Water" 
+				&& _Coordinator.GetComponent<RessourcesManagement>()._Ressources[1]._Amount >= _Coordinator.GetComponent<Buildings> ()._Buildings [_Coordinator.GetComponent<Buildings> ()._indexBuildings].GetComponent<BuildingCost>()._RequiredWoodToBuild) {
+
 				_blockedTile = true;
 				GameObject _PlacedBuilding = (GameObject)Instantiate (_Coordinator.GetComponent<Buildings> ()._Buildings [_Coordinator.GetComponent<Buildings> ()._indexBuildings],
 					                            new Vector3 (transform.position.x, transform.position.y * (4 / 3), transform.position.z),
 					                            Quaternion.identity);
 				_PlacedBuilding.name = _Coordinator.GetComponent<Buildings> ()._Buildings [_Coordinator.GetComponent<Buildings> ()._indexBuildings].name;
+
+				_Coordinator.GetComponent<RessourcesManagement> ()._Ressources [1].UseAmount (_Coordinator.GetComponent<Buildings> ()._Buildings [_Coordinator.GetComponent<Buildings> ()._indexBuildings].GetComponent<BuildingCost> ()._RequiredWoodToBuild);
 			}
 		}
 	}

@@ -9,9 +9,11 @@ public class WoodcutterCamp : MonoBehaviour {
 	public GameObject _City;
 	public GameObject _Coordinator;
 
+
+
 	// Use this for initialization
 	void Start () {
-
+		
 		GameObject _City = GameObject.Find ("City");
 		GameObject _Coordinator = GameObject.Find ("Coordinator");
 
