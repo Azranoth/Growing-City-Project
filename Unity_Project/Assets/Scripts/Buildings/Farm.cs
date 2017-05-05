@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Farm : BuildingCost {
+public class Farm : MonoBehaviour {
 
 	public int _production = 10;
 
