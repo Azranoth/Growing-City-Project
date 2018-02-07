@@ -6,7 +6,6 @@ public class CityEvolution : MonoBehaviour {
 
 	public static int _nbCityLevels = 2;
 
-	public GameObject _Player;
 	public GameObject[] _cityLevels = new GameObject [_nbCityLevels];
 	public int[] _RequiredPopulationToEvolve = new int[_nbCityLevels];
 
@@ -39,9 +38,6 @@ public class CityEvolution : MonoBehaviour {
 		CityModel.name = "City";
 		GameObject Tile = GameObject.Find ("GridTile(" + rand_x + "," + rand_y + ")");
 		Tile.GetComponent<PlacingBuildingOnTile> ()._blockedTile = true;
-
-		//TODO
-		// Déplacer la vue du joueur sur la ville
 	}
 
 	public void EvolveCity(){
