@@ -24,6 +24,7 @@ public class RessourcesManagement : MonoBehaviour {
 			Debug.Log ("Produce ressource "+ _Name + ", produces " + _Production + ", Used " + amount + ", have " + _Amount);
 		}
 	}
+
 	/* ----- STATIC VARS -----*/
 	public static int _nbRessources = 2;
 	public static float TIME_BETWEEN_TICKS = 2.5f;
@@ -62,25 +63,70 @@ public class RessourcesManagement : MonoBehaviour {
 		// updating ressources amount every TIME_BETWEEN_TICKS seconds
 
 		if (_timerTicks <= 0) {
-			for (int i = 0; i < _nbRessources; i++) {
-				// If food is unsufficient
-				if (i == 0) {
-					if (_Ressources [0]._Amount < _RessourceUsedPerTick [0]) {
-						// kill people accordingly
-						this.GetComponent<PopulationGrowth> ()._Population -= (_RessourceUsedPerTick [0] - _Ressources [0]._Amount);
-						_Ressources [0]._Amount = 0;
-					} else {
-						_Ressources [0].UseAmount (_RessourceUsedPerTick [0] - _Ressources [0]._Production);
-					}
-				}
-				// if wood is unsifficent
-					// Destroy buildings
+			// ----- FOOD
+			// If food is unsufficient
+			if (_Ressources [0]._Amount < _RessourceUsedPerTick [0]) {
+				// kill people accordingly
+				this.GetComponent<PopulationGrowth> ()._Population -= (_RessourceUsedPerTick [0] - _Ressources [0]._Amount);
+				_Ressources [0]._Amount = 0;
 
-			_Ressources [i].UseAmount(_RessourceUsedPerTick [i] - _Ressources [i]._Production);
+				// If every single citizen died, game is lost
+				if (this.GetComponent<PopulationGrowth> ()._Population <= 0) {
+					this.GameOver ();
+				}
+			// If food is sufficient
+			} else {
+				// Use the required amount to feed every citizen
+				_Ressources [0].UseAmount (_RessourceUsedPerTick [0] - _Ressources [0]._Production);
 			}
+
+
+			// ----- WOOD
+			// if wood is unsifficent
+			if (_Ressources [1]._Amount < _RessourceUsedPerTick [1]) {
+				// Destroy buildings
+				// Choose randomly the kind of building to destroy
+				int rand = (int)Random.Range(0, _nbRessources-1);
+				if (rand == 0 && this.GetComponent<Buildings> ()._nbFarms != 0) {
+					
+					int randBuilding = (int)Random.Range (0, this.GetComponent<Buildings> ()._nbFarms-1);
+					GameObject buildingToDestroy = this.GetComponent<Buildings> ()._farms.transform.GetChild (randBuilding).gameObject;
+					buildingToDestroy.GetComponent<Farm> ()._tile.GetComponent<PlacingBuildingOnTile> ()._blockedTile = false;
+					this._Ressources [0]._Production -= buildingToDestroy.GetComponent<Farm> ()._production;
+					this.GetComponent<Buildings> ()._nbFarms--;
+					this._RessourceUsedPerTick [1] -= 2;
+
+					DestroyObject (buildingToDestroy);
+				}
+				if (rand == 1 && this.GetComponent<Buildings> ()._nbWoodCutters != 0) {
+					
+					int randBuilding = (int)Random.Range (0, this.GetComponent<Buildings> ()._nbWoodCutters-1);
+					GameObject buildingToDestroy = this.GetComponent<Buildings> ()._woodcutters.transform.GetChild (randBuilding).gameObject;
+					buildingToDestroy.GetComponent<WoodcutterCamp> ()._tile.GetComponent<PlacingBuildingOnTile> ()._blockedTile = false;
+					this._Ressources [1]._Production -= buildingToDestroy.GetComponent<WoodcutterCamp> ()._production;
+					this.GetComponent<Buildings> ()._nbWoodCutters--;
+					this._RessourceUsedPerTick [1] -= 2;
+
+					DestroyObject (buildingToDestroy);
+				}
+
+			} else {
+				// Use the required amount to feed every citizen
+				_Ressources [1].UseAmount (_RessourceUsedPerTick [1] - _Ressources [1]._Production);
+			}
+
+
 			_timerTicks = TIME_BETWEEN_TICKS;
 		} else {
 			_timerTicks -= 1.0f * Time.deltaTime;
 		}		
 	}
+
+
+
+	public void GameOver(){
+		Debug.Log ("GAME OVER");
+		Time.timeScale = 0.0f;
+	}
 }
+		

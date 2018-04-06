@@ -7,7 +7,7 @@ using System.Collections;
 public class CameraMovement : MonoBehaviour {
 
 	private float edgeDistance = 50.0f;		// Maximum distance from any edge of the screen to make the camera moving.
-	private float speed = 10.0f;			// Static speed of the camera movements.
+	private float speed = 16.0f;			// Static speed of the camera movements.
 
 	public GameObject CameraPivot;			// The main camera object, linked to the player object.
 
@@ -47,11 +47,11 @@ public class CameraMovement : MonoBehaviour {
 
 		/* Zooming/Dezooming with UpArrow && DownArrow keys */
 		if (Input.GetAxis("Mouse ScrollWheel") > 0) {
-			CameraPivot.GetComponent<Camera> ().orthographicSize -= 5.0f*speed*Time.deltaTime;
+			CameraPivot.GetComponent<Camera> ().orthographicSize -= 4.0f*speed*Time.deltaTime;
 		}
 
 		if (Input.GetAxis("Mouse ScrollWheel") < 0) {
-			CameraPivot.GetComponent<Camera> ().orthographicSize += 5.0f*speed*Time.deltaTime;
+			CameraPivot.GetComponent<Camera> ().orthographicSize += 4.0f*speed*Time.deltaTime;
 		}
 		//-------------------------------------------------//	
 	}

@@ -9,9 +9,18 @@ public class Buildings : MonoBehaviour {
 	public int _indexBuildings = 0;
 	public int _buildingCost = 5;
 
+	public GameObject _farms;
+	public GameObject _woodcutters;
+	public int _nbFarms 	  = 0;
+	public int _nbWoodCutters = 0;
+
+
 	// Use this for initialization
 	void Start () {
-		
+
+		_farms 		 = GameObject.Find("Farms");
+		_woodcutters = GameObject.Find("WoodCutters");
+
 	}
 	
 	// Update is called once per frame

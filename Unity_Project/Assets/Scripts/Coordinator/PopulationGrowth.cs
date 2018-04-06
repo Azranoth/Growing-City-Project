@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PopulationGrowth : MonoBehaviour {
 
-	public static float GROWTH_DELAY = 5.0f;
+	public static float GROWTH_DELAY = 3.0f;
 
 	public int _Population = 5;
 
@@ -19,6 +19,7 @@ public class PopulationGrowth : MonoBehaviour {
 		if (_GrowthTimer > 0) {
 			_GrowthTimer -= 1.0f * Time.deltaTime;
 		} else {
+			
 			_Population += (1 + (int)(_Population / 10.0f));
 			this.GetComponent<RessourcesManagement>()._RessourceUsedPerTick [0] = _Population;
 

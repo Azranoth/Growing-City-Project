@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CityEvolution : MonoBehaviour {
 
+	public static int _minDistanceToLimits = 5;
+
 	public static int _nbCityLevels = 2;
 
 	public GameObject[] _cityLevels = new GameObject [_nbCityLevels];
@@ -24,8 +26,8 @@ public class CityEvolution : MonoBehaviour {
 
 	public void GeneratingCity(){
 		
-		int rand_x = (int) Random.Range(0,this.GetComponent<Grid> ().MAX_X);
-		int rand_y = (int) Random.Range(0,this.GetComponent<Grid> ().MAX_Y);
+		int rand_x = (int) Random.Range(_minDistanceToLimits ,this.GetComponent<Grid> ().MAX_X - _minDistanceToLimits);
+		int rand_y = (int) Random.Range(_minDistanceToLimits ,this.GetComponent<Grid> ().MAX_Y - _minDistanceToLimits);
 		GameObject randomTile = GameObject.Find ("GridTile(" + rand_x + "," + rand_y + ")");
 
 		while(randomTile.GetComponent<PlacingBuildingOnTile>()._blockType == "Water"){
