@@ -19,15 +19,25 @@ public class PopulationGrowth : MonoBehaviour {
 		if (_GrowthTimer > 0) {
 			_GrowthTimer -= 1.0f * Time.deltaTime;
 		} else {
-			
+
+			// If every single citizen died, game is lost
+			if (_Population <= 0) {
+				this.GameOver ();
+			}
 			_Population += (1 + (int)(_Population / 10.0f));
 			this.GetComponent<RessourcesManagement>()._RessourceUsedPerTick [0] = _Population;
 
-			if (_Population >= this.GetComponent<CityEvolution> ()._RequiredPopulationToEvolve [this.GetComponent<CityEvolution> ()._levelATM-1]) {
+			if (this.GetComponent<CityEvolution> ()._levelATM <= CityEvolution._nbCityLevels
+				&& _Population >= this.GetComponent<CityEvolution> ()._RequiredPopulationToEvolve [this.GetComponent<CityEvolution> ()._levelATM-1]) {
 				this.GetComponent<CityEvolution> ().EvolveCity ();
 			}
 				
 			_GrowthTimer = GROWTH_DELAY;
 		}
+	}
+
+	public void GameOver(){
+		Debug.Log ("GAME OVER");
+		Time.timeScale = 0.0f;
 	}
 }

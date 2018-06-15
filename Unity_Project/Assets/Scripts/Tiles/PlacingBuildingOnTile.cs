@@ -44,16 +44,23 @@ public class PlacingBuildingOnTile : MonoBehaviour {
 						this._Coordinator.GetComponent<Buildings> ()._nbFarms++;
 					}
 
-					if (_Coordinator.GetComponent<Buildings> ()._indexBuildings == 1) {
+					else if (_Coordinator.GetComponent<Buildings> ()._indexBuildings == 1) {
 						_PlacedBuilding.GetComponent<WoodcutterCamp> ()._blockType = _blockType;
 						_PlacedBuilding.GetComponent<WoodcutterCamp> ()._tile = this.gameObject;
 
 						this._Coordinator.GetComponent<Buildings> ()._nbWoodCutters++;
 					}
 
+					else if (_Coordinator.GetComponent<Buildings> ()._indexBuildings == 2) {
+						_PlacedBuilding.GetComponent<GoldMine> ()._blockType = _blockType;
+						_PlacedBuilding.GetComponent<GoldMine> ()._tile = this.gameObject;
+
+						this._Coordinator.GetComponent<Buildings> ()._nbGoldMines++;
+					}
+
 					// Update corresponding ressource production & consuption
 					_Coordinator.GetComponent<RessourcesManagement> ()._Ressources [1].UseAmount (_Coordinator.GetComponent<Buildings> ()._buildingCost);
-					_Coordinator.GetComponent<RessourcesManagement> ()._RessourceUsedPerTick [1] += 2;
+					_Coordinator.GetComponent<RessourcesManagement> ()._RessourceUsedPerTick [1] += 1;
 				}
 			}
 		}

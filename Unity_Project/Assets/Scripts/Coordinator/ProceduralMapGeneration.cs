@@ -21,6 +21,8 @@ public class ProceduralMapGeneration : MonoBehaviour {
 		
 		//Scale = this.GetComponent<Grid> ().Scale;
 
+		// TODO Remodoler le système de gen tout entier
+ 
 		/** EBAUCHE D'ALGO
 		 * 1st tile -> toujours ground
 		 * pour chaque tile(i,j) (parcours bas-gauche -> haut droite) :
@@ -89,9 +91,9 @@ public class ProceduralMapGeneration : MonoBehaviour {
 					/*---------------------------------------------------------------------------*/
 
 					/* ---Determining which kind of block it will be--- */
-					if ((nbGrounds + nbForests) >= nbWaters) { // MORE GROUND BLOCKS AROUND
+					if ((nbGrounds + nbForests) >= nbWaters) { // MORE LAND BLOCKS AROUND
 						rand = Random.Range (0, 100);
-						if (rand <= 90) {
+						if (rand <= 95) {
 							rand = Random.Range (0, 100);
 							if (rand < (15 + 15 * nbForests)) {
 								/* create forest block */

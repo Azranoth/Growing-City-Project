@@ -6,7 +6,7 @@ public class CityEvolution : MonoBehaviour {
 
 	public static int _minDistanceToLimits = 5;
 
-	public static int _nbCityLevels = 2;
+	public static int _nbCityLevels = 3;
 
 	public GameObject[] _cityLevels = new GameObject [_nbCityLevels];
 	public int[] _RequiredPopulationToEvolve = new int[_nbCityLevels];
@@ -17,6 +17,7 @@ public class CityEvolution : MonoBehaviour {
 	void Start () {
 		_RequiredPopulationToEvolve [0] = 100;
 		_RequiredPopulationToEvolve [1] = 400;
+		_RequiredPopulationToEvolve [2] = 750;
 	}
 	
 	// Update is called once per frame
@@ -40,12 +41,17 @@ public class CityEvolution : MonoBehaviour {
 		CityModel.name = "City";
 		GameObject Tile = GameObject.Find ("GridTile(" + rand_x + "," + rand_y + ")");
 		Tile.GetComponent<PlacingBuildingOnTile> ()._blockedTile = true;
+
+		GameObject player = GameObject.Find ("Player");
+		player.transform.position = new Vector3(rand_x, rand_y, player.transform.position.z);
 	}
 
 	public void EvolveCity(){
 		_levelATM++;
 		/* MODEL EVOLVE */
 		//GameObject CityModel = GameObject.Find ("City");
+
+		// TODO : unlocking
 
 	}
 }
