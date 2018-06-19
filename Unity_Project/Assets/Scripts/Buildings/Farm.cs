@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Farm : MonoBehaviour {
 
-	public int 		_production = 12;
+	public int 		_production = 8;
 	public string	_blockType = "Ground"; // Default
 	public GameObject _tile;			   // Tile object on which the farm is built
 

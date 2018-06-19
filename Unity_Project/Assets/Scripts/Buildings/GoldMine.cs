@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GoldMine : MonoBehaviour {
 
-	public int 		_production = 6;
+	public int 		_production = 5;
 	public string	_blockType = "Ground"; // Default
 	public GameObject _tile;		       // Tile object on which the woodcutter is built
 
