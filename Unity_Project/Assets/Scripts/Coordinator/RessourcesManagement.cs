@@ -159,6 +159,5 @@ public class RessourcesManagement : MonoBehaviour {
 			_timerTicks -= 1.0f * Time.deltaTime;
 		}		
 	}
-
 }
 		

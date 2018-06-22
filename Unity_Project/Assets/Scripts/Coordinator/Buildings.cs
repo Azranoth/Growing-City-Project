@@ -16,13 +16,11 @@ public class Buildings : MonoBehaviour {
 	public int _nbWoodCutters = 0;
 	public int _nbGoldMines   = 0;
 
+	public bool _isBuilding = false;
+
 
 	// Use this for initialization
 	void Start () {
-
-		_farms 		 = GameObject.Find("Farms");
-		_woodcutters = GameObject.Find("WoodCutters");
-		_goldmines   = GameObject.Find ("GoldMines");
 
 	}
 	

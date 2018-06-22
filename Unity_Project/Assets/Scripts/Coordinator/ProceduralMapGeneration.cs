@@ -21,7 +21,7 @@ public class ProceduralMapGeneration : MonoBehaviour {
 		
 		//Scale = this.GetComponent<Grid> ().Scale;
 
-		// TODO Remodoler le système de gen tout entier
+		// TODO Remodoler le système de gen' tout entier
  
 		/** EBAUCHE D'ALGO
 		 * 1st tile -> toujours ground
@@ -54,7 +54,7 @@ public class ProceduralMapGeneration : MonoBehaviour {
 		int nbForests = 0;
 		int nbWaters = 0;
 		int rand = Random.Range (0,1);
-		Debug.Log ("prout");
+
 		GameObject RelativeTile;
 
 		/* For each tile (i,j) */

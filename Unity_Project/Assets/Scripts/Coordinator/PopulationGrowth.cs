@@ -6,7 +6,7 @@ public class PopulationGrowth : MonoBehaviour {
 
 	public static float GROWTH_DELAY = 3.0f;
 
-	public int _Population = 5;
+	public int _Population = 10;
 
 	public float _GrowthTimer = GROWTH_DELAY;
 	// Use this for initialization
@@ -24,7 +24,7 @@ public class PopulationGrowth : MonoBehaviour {
 			if (_Population <= 0) {
 				this.GameOver ();
 			}
-			_Population += (1 + (int)(_Population / 10.0f));
+			_Population += (1 + (int)(_Population / 3.0f));
 			this.GetComponent<RessourcesManagement>()._RessourceUsedPerTick [0] = _Population;
 
 			if (this.GetComponent<CityEvolution> ()._levelATM <= CityEvolution._nbCityLevels

@@ -26,7 +26,7 @@ public class PlacingBuildingOnTile : MonoBehaviour {
 
 	void OnMouseOver(){
 		if (Input.GetButtonDown ("mouse 1")) {
-			if (!_blockedTile && _blockType != "Water") {
+			if (!_blockedTile && _blockType != "Water" && !_Coordinator.GetComponent<Buildings> ()._isBuilding) {
 				if (_Coordinator.GetComponent<RessourcesManagement> ()._Ressources [1]._Amount >= _Coordinator.GetComponent<Buildings> ()._buildingCost) {
 					// Consider the tile as occupied
 					_blockedTile = true;
@@ -42,6 +42,8 @@ public class PlacingBuildingOnTile : MonoBehaviour {
 						_PlacedBuilding.GetComponent<Farm> ()._tile = this.gameObject;
 
 						this._Coordinator.GetComponent<Buildings> ()._nbFarms++;
+
+						this._Coordinator.GetComponent<Buildings> ()._isBuilding = true;
 					}
 
 					else if (_Coordinator.GetComponent<Buildings> ()._indexBuildings == 1) {
@@ -49,6 +51,8 @@ public class PlacingBuildingOnTile : MonoBehaviour {
 						_PlacedBuilding.GetComponent<WoodcutterCamp> ()._tile = this.gameObject;
 
 						this._Coordinator.GetComponent<Buildings> ()._nbWoodCutters++;
+
+						this._Coordinator.GetComponent<Buildings> ()._isBuilding = true;
 					}
 
 					else if (_Coordinator.GetComponent<Buildings> ()._indexBuildings == 2) {
@@ -56,6 +60,8 @@ public class PlacingBuildingOnTile : MonoBehaviour {
 						_PlacedBuilding.GetComponent<GoldMine> ()._tile = this.gameObject;
 
 						this._Coordinator.GetComponent<Buildings> ()._nbGoldMines++;
+
+						this._Coordinator.GetComponent<Buildings> ()._isBuilding = true;
 					}
 
 					// Update corresponding ressource production & consuption
