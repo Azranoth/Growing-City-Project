@@ -11,6 +11,8 @@ public class Grid : MonoBehaviour {
 	public GameObject _Tile;	
 	//public GameObject _ObjToRemove;
 
+
+
 	// Use this for initialization
 	void Start () {
 		/* Generate a (MAX_X*MAX_Y) grid of (Scale*Scale) tiles */

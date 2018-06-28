@@ -28,7 +28,7 @@ public class RessourcesManagement : MonoBehaviour {
 			} else {
 				_Amount -= amount;
 			}
-			Debug.Log ("Produce ressource "+ _Name + ", produces " + _Production + ", Used " + amount + ", have " + _Amount);
+			//Debug.Log ("Produce ressource "+ _Name + ", produces " + _Production + ", Used " + amount + ", have " + _Amount);
 		}
 	}
 
@@ -42,6 +42,18 @@ public class RessourcesManagement : MonoBehaviour {
 	public float _timerTicks = TIME_BETWEEN_TICKS;
 
 	public float _MaxDistance;
+
+	public bool _bankrupt = true;
+
+	// Variables used to trade ressources
+	public int _foodToWood = 0;				// Food amount to be traded for wood
+	public int _woodToFood = 0;				// Wood amount to be traded for food
+	public int _goldToFood = 0;				// gold amount to be traded for food
+	public int _goldToWood = 0;				// gold amount to be traded for wood
+
+	public float _tradingTax = 1.25f;		// Tax applied to ressources (mult *)
+	public int _tradingCapacityPerTick = 0; // Amount of ressources that can be traded in a single tick; more posts -> more capacity
+
 
 	/*
 	 * 0 : food
@@ -74,6 +86,12 @@ public class RessourcesManagement : MonoBehaviour {
 			for (int i = 0; i < _nbRessources; ++i) {
 				_Ressources [i]._Amount += _Ressources [i]._Production;
 			}
+
+			// If the town still have some money, continue trading operations
+			if (!_bankrupt) {
+				trading ();
+			}
+
 			// ----- FOOD
 			// If food is unsufficient
 			if ( _Ressources [0]._Amount < _RessourceUsedPerTick [0]) {
@@ -109,6 +127,10 @@ public class RessourcesManagement : MonoBehaviour {
 					buildingTypesExisting.Add(2);
 				}
 
+				if (this.GetComponent<Buildings> ()._nbTradingPosts > 0) {
+					buildingTypesExisting.Add(3);
+				}
+
 				if (buildingTypesExisting.Count > 0) {
 					int rand = (int)buildingTypesExisting[Random.Range (0, buildingTypesExisting.Count)];
 					if (rand == 0) {
@@ -141,6 +163,19 @@ public class RessourcesManagement : MonoBehaviour {
 						buildingToDestroy.GetComponent<GoldMine> ()._tile.GetComponent<PlacingBuildingOnTile> ()._blockedTile = false;
 						this._Ressources [2]._Production -= buildingToDestroy.GetComponent<GoldMine> ()._production;
 						this.GetComponent<Buildings> ()._nbGoldMines--;
+						this._RessourceUsedPerTick [1] -= 2;
+
+						DestroyObject (buildingToDestroy);
+					}
+
+					if (rand == 3) {
+
+						int randBuilding = (int)Random.Range (0, this.GetComponent<Buildings> ()._nbTradingPosts - 1);
+						GameObject buildingToDestroy = this.GetComponent<Buildings> ()._tradingposts.transform.GetChild (randBuilding).gameObject;
+						buildingToDestroy.GetComponent<TradingPost> ()._tile.GetComponent<PlacingBuildingOnTile> ()._blockedTile = false;
+						//this._Ressources [2]._Production -= buildingToDestroy.GetComponent<GoldMine> ()._production;
+						this.GetComponent<Buildings> ()._nbTradingPosts--;
+						this._RessourceUsedPerTick [1] -= 2;
 						this._RessourceUsedPerTick [2] -= 2;
 
 						DestroyObject (buildingToDestroy);
@@ -149,8 +184,21 @@ public class RessourcesManagement : MonoBehaviour {
 				_Ressources [1]._Amount = 0;
 
 			} else {
-				// Use the required amount to feed every citizen
+				// Use the required amount to maintain buildings in a good state
 				_Ressources [1].UseAmount (_RessourceUsedPerTick [1]);
+			}
+
+			// ----- GOLD
+			// if gold is unsufficent
+			if (_Ressources [2]._Amount < _RessourceUsedPerTick [2]) {
+				// The city goes bankrupt
+				_bankrupt = true;
+				_Ressources [2]._Amount = 0;
+
+			} else {
+				
+				_bankrupt = false;
+				_Ressources [2].UseAmount (_RessourceUsedPerTick [2]);
 			}
 
 
@@ -159,5 +207,77 @@ public class RessourcesManagement : MonoBehaviour {
 			_timerTicks -= 1.0f * Time.deltaTime;
 		}		
 	}
+
+
+	/*
+	 * function trading()
+	 * Manage trading operations in progress. Add obtained ressources & remove payed ressources (including taxes) for each kind of possible transaction
+	 */
+	void trading(){
+
+		// If a trade between food & wood has been initialized
+		if (_foodToWood > 0) {
+			// If the trading posts are unable to trade the whole amount of ressources in a single transaction
+			if (_foodToWood > _tradingCapacityPerTick) {
+
+				_Ressources [0].UseAmount ( (int)(_tradingCapacityPerTick * _tradingTax) );
+				_Ressources [1]._Amount += _tradingCapacityPerTick;
+				_foodToWood -= _tradingCapacityPerTick;
+			} else {
+
+				_Ressources [0].UseAmount ( (int)(_foodToWood * _tradingTax) );
+				_Ressources [1]._Amount += _foodToWood;
+				_foodToWood = 0;
+			}
+		}
+
+		// If a trade between wood & food has been initialized
+		if (_woodToFood > 0) {
+			// If the trading posts are unable to trade the whole amount of ressources in a single transaction
+			if (_woodToFood > _tradingCapacityPerTick) {
+
+				_Ressources [1].UseAmount ( (int)(_tradingCapacityPerTick * _tradingTax) );
+				_Ressources [0]._Amount += _tradingCapacityPerTick;
+				_woodToFood -= _tradingCapacityPerTick;
+			} else {
+
+				_Ressources [1].UseAmount ( (int)(_foodToWood * _tradingTax) );
+				_Ressources [0]._Amount += _foodToWood;
+				_woodToFood = 0;
+			}
+		}
+
+		// If a trade between food & wood has been initialized
+		if (_goldToFood > 0) {
+			// If the trading posts are unable to trade the whole amount of ressources in a single transaction
+			if (_goldToFood > _tradingCapacityPerTick) {
+
+				_Ressources [2].UseAmount ( (int)(_tradingCapacityPerTick * _tradingTax) );
+				_Ressources [0]._Amount += _tradingCapacityPerTick;
+				_goldToFood -= _tradingCapacityPerTick;
+			} else {
+
+				_Ressources [2].UseAmount ( (int)(_foodToWood * _tradingTax) );
+				_Ressources [0]._Amount += _foodToWood;
+				_goldToFood = 0;
+			}
+		}
+
+		if (_goldToWood > 0) {
+			// If the trading posts are unable to trade the whole amount of ressources in a single transaction
+			if (_goldToWood > _tradingCapacityPerTick) {
+
+				_Ressources [2].UseAmount ( (int)(_tradingCapacityPerTick * _tradingTax) );
+				_Ressources [1]._Amount += _tradingCapacityPerTick;
+				_goldToWood -= _tradingCapacityPerTick;
+			} else {
+
+				_Ressources [2].UseAmount ( (int)(_foodToWood * _tradingTax) );
+				_Ressources [1]._Amount += _foodToWood;
+				_goldToWood = 0;
+			}
+		}
+	}
+			
 }
 		

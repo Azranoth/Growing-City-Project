@@ -14,10 +14,13 @@ public class GridTile : MonoBehaviour {
 	}
 
 	void OnMouseOver(){
-		Color color = GetComponent<Renderer> ().material.color;
-		color.a = 50.0f;
 
-		GetComponent<Renderer> ().material.SetColor ("_Color", color);
+		if (this.GetComponent<PlacingBuildingOnTile> ()._Coordinator.GetComponent<Buildings> ()._outOfMenu) {
+			Color color = GetComponent<Renderer> ().material.color;
+			color.a = 50.0f;
+
+			GetComponent<Renderer> ().material.SetColor ("_Color", color);
+		}
 	}
 
 	void OnMouseExit(){

@@ -36,6 +36,9 @@ public class PopulationGrowth : MonoBehaviour {
 		}
 	}
 
+	/* function GameOver()
+	 * Ultra basic gameover function -> stops the game. That's it.
+	 */
 	public void GameOver(){
 		Debug.Log ("GAME OVER");
 		Time.timeScale = 0.0f;

@@ -4,20 +4,29 @@ using UnityEngine;
 
 public class Buildings : MonoBehaviour {
 
-	private static int _nbBuildings = 3;
+	private static int _nbBuildings = 4;
 	public GameObject[] _Buildings = new GameObject[_nbBuildings];	// List of each building usable in the game
-	public int _indexBuildings = 0;									// Index of the current building type selected
-	public int _buildingCost = 5;									// Building cost of the current building type selected
+	public int _indexBuildings = 0;									// Index of the current building type selected (init farm)
+	public int _buildingCost = 5;									// Building cost of the current building type selected (init farm)
 
 	public GameObject _farms;
 	public GameObject _woodcutters;
 	public GameObject _goldmines;
-	public int _nbFarms 	  = 0;
-	public int _nbWoodCutters = 0;
-	public int _nbGoldMines   = 0;
+	public GameObject _tradingposts;
 
-	public bool _isBuilding = false;
+	public int _nbFarms 	   = 0;			// Number of built farms
+	public int _nbWoodCutters  = 0;			// Number of built camps
+	public int _nbGoldMines    = 0;			// Number of built mines
+	public int _nbTradingPosts = 0;			// Number of built posts
 
+	public bool _isBuildingFarm = false;	// Is a farm being built right now?
+	public bool _isBuildingCamp = false;	// Is a camp being built right now?
+	public bool _isBuildingMine = false;	// Is a mine being built right now?
+	public bool _isBuildingPost = false;	// Is a post being built right now?
+
+	public GameObject _tradeButton;			// Trading menu button
+
+	public bool _outOfMenu = true; 			// Displayed/hidden menus
 
 	// Use this for initialization
 	void Start () {
@@ -43,6 +52,15 @@ public class Buildings : MonoBehaviour {
 		}
 		if (Input.GetKey (KeyCode.Alpha4)) {
 			_indexBuildings = 3;	// Tradingpost
+			_buildingCost = 8;
 		}
+	}
+
+	/*
+	 * activateTradeButton()
+	 * Called when the first trading post is built : unlock the access to the trade menu by displaying its button
+	 */
+	public void activateTradeButton(){
+		_tradeButton.SetActive (true);
 	}
 }
