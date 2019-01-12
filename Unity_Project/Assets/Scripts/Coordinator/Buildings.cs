@@ -9,24 +9,31 @@ public class Buildings : MonoBehaviour {
 	public int _indexBuildings = 0;									// Index of the current building type selected (init farm)
 	public int _buildingCost = 5;									// Building cost of the current building type selected (init farm)
 
+	[Header("Game objects")]
 	public GameObject _farms;
 	public GameObject _woodcutters;
 	public GameObject _goldmines;
 	public GameObject _tradingposts;
+	[Space]
 
+	[Header("Game objects number")]
 	public int _nbFarms 	   = 0;			// Number of built farms
 	public int _nbWoodCutters  = 0;			// Number of built camps
 	public int _nbGoldMines    = 0;			// Number of built mines
 	public int _nbTradingPosts = 0;			// Number of built posts
+	[Space]
 
+	[Header("Booleans")]
 	public bool _isBuildingFarm = false;	// Is a farm being built right now?
 	public bool _isBuildingCamp = false;	// Is a camp being built right now?
 	public bool _isBuildingMine = false;	// Is a mine being built right now?
 	public bool _isBuildingPost = false;	// Is a post being built right now?
+	public bool _outOfMenu = true; 			// Displayed/hidden menus
+	[Space]
 
 	public GameObject _tradeButton;			// Trading menu button
 
-	public bool _outOfMenu = true; 			// Displayed/hidden menus
+
 
 	// Use this for initialization
 	void Start () {

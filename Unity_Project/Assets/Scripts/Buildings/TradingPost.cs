@@ -103,6 +103,9 @@ public class TradingPost : MonoBehaviour {
 		int _distanceToCity = (int) (Mathf.Sqrt( Mathf.Pow(_City.transform.position.x - this.transform.position.x,2)
 			+ Mathf.Pow(_City.transform.position.z - this.transform.position.z,2))/2.0f);
 
+		// If a trading post is near sea, efficiency++ 
+		//TODO
+
 		_Coordinator.GetComponent<RessourcesManagement>()._tradingCapacityPerTick += 
 			(int)(this._tradingCapacity / (_distanceToCity / _Coordinator.GetComponent<RessourcesManagement> ()._MaxDistance));
 		_Coordinator.GetComponent<Buildings> ()._isBuildingPost = false;

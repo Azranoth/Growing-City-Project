@@ -142,7 +142,8 @@ public class RessourcesManagement : MonoBehaviour {
 						this.GetComponent<Buildings> ()._nbFarms--;
 						this._RessourceUsedPerTick [1] -= 2;
 
-						DestroyObject (buildingToDestroy);
+
+						Destroy (buildingToDestroy);
 					}
 					if (rand == 1) {
 						
@@ -153,7 +154,7 @@ public class RessourcesManagement : MonoBehaviour {
 						this.GetComponent<Buildings> ()._nbWoodCutters--;
 						this._RessourceUsedPerTick [1] -= 2;
 
-						DestroyObject (buildingToDestroy);
+						Destroy (buildingToDestroy);
 					}
 
 					if (rand == 2) {
@@ -165,7 +166,7 @@ public class RessourcesManagement : MonoBehaviour {
 						this.GetComponent<Buildings> ()._nbGoldMines--;
 						this._RessourceUsedPerTick [1] -= 2;
 
-						DestroyObject (buildingToDestroy);
+						Destroy (buildingToDestroy);
 					}
 
 					if (rand == 3) {
@@ -178,7 +179,7 @@ public class RessourcesManagement : MonoBehaviour {
 						this._RessourceUsedPerTick [1] -= 2;
 						this._RessourceUsedPerTick [2] -= 2;
 
-						DestroyObject (buildingToDestroy);
+						Destroy (buildingToDestroy);
 					}
 				}
 				_Ressources [1]._Amount = 0;

@@ -6,21 +6,28 @@ using UnityEngine;
 public class HUDScript : MonoBehaviour {
 
 	// --- Ressources & Pop objects
+	[Header("Ressources values")]
 	public Text _foodCount;
 	public Text _woodCount;
 	public Text _goldCount;
 	public Text _popCount;
+	[Space]
 
+	[Header("Tick texts")]
 	public Text _foodPerTick;
 	public Text _woodPerTick;
 	public Text _goldPerTick;
+	[Space]
 
+	[Header("Select highligh")]
 	// --- Building selection highlight objects
 	public GameObject _selectedFarm;
 	public GameObject _selectedWoodcutter;
 	public GameObject _selectedGoldmine;
 	public GameObject _selectedTradingpost;
+	[Space]
 
+	[Header("Trading menu objects")]
 	// --- Trading menu objects
 	public GameObject _tradeButton;
 	public GameObject _tradeMenu;
@@ -29,6 +36,13 @@ public class HUDScript : MonoBehaviour {
 	public Text _woodToFoodAmount;
 	public Text _goldToFoodAmount;
 	public Text _goldToWoodAmount;
+	[Space]
+
+	[Header("Menus Buttons")]
+	public GameObject _upgradeButton;
+	public GameObject _upgradeMenu;
+	private bool _upgradeMenuDisplay = false;
+	[Space]
 
 	public GameObject _coordinator;
 
@@ -175,5 +189,26 @@ public class HUDScript : MonoBehaviour {
 
 		_coordinator.GetComponent<RessourcesManagement> ()._goldToWood += 20;
 	}
-	//--------
+	// --------
+
+	// -------- UPGRADE BUTTON & MENU
+	public void onUpgradeButtonClicked(){
+
+		if (_upgradeMenuDisplay) {
+			_upgradeMenu.SetActive (false);
+			_upgradeButton.SetActive (true );
+			_coordinator.GetComponent<Buildings> ()._outOfMenu = true;
+			_upgradeMenuDisplay = false;
+		} else {
+			_upgradeMenu.SetActive (true);
+			_upgradeButton.SetActive (false);
+			_coordinator.GetComponent<Buildings> ()._outOfMenu = false;
+			_upgradeMenuDisplay = true;
+		}
+
+		//TODO
+		//Sendmessage Coord.upgrades
+	}
+
+
 }

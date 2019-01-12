@@ -46,12 +46,12 @@ public class ProceduralMapGeneration : MonoBehaviour {
 
 	public void MapGeneration(){
 
-		if (this.GetComponent<Grid> () == null) {
+		if (this.GetComponent<GameGrid> () == null) {
 			Debug.Log (" MISSING GRID SCRIPT ");
 		}
-		MAX_X = this.GetComponent<Grid> ().MAX_X;
-		MAX_Y = this.GetComponent<Grid> ().MAX_Y;
-		Scale = this.GetComponent<Grid> ().Scale;
+		MAX_X = this.GetComponent<GameGrid> ().MAX_X;
+		MAX_Y = this.GetComponent<GameGrid> ().MAX_Y;
+		Scale = this.GetComponent<GameGrid> ().Scale;
 
 		int nbGrounds = 0;
 		int nbForests = 0;
@@ -183,7 +183,7 @@ public class ProceduralMapGeneration : MonoBehaviour {
 		
 	}
 	
-	public void BlockInstantiation(string type, int x, int z){
+	private void BlockInstantiation(string type, int x, int z){
 		GameObject RelativeTile = GameObject.Find ("GridTile(" + x + "," + z + ")");
 
 		if (RelativeTile == null) {

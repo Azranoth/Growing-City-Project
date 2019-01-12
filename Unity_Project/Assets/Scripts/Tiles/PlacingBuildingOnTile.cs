@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlacingBuildingOnTile : MonoBehaviour {
 
@@ -19,13 +20,15 @@ public class PlacingBuildingOnTile : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+		
 
 	}
 
 	void OnMouseOver(){
 		if (Input.GetButtonDown ("mouse 1")) {
-			if (_Coordinator.GetComponent<Buildings>()._outOfMenu && !_blockedTile && _blockType != "Water" ) {
+
+			// Place building only if 1. Player is not browsing menus 2. Tile is free to build & not water type 3. the mouse pointer is not over a UI object.
+			if (_Coordinator.GetComponent<Buildings>()._outOfMenu && !_blockedTile && _blockType != "Water" && !EventSystem.current.IsPointerOverGameObject() ) {
 				if (_Coordinator.GetComponent<RessourcesManagement> ()._Ressources [1]._Amount >= _Coordinator.GetComponent<Buildings> ()._buildingCost) {
 					
 
