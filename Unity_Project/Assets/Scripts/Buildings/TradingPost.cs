@@ -4,92 +4,47 @@ using UnityEngine;
 
 public class TradingPost : MonoBehaviour {
 
+	public int _tradingCapacity = 15;
+
+	[Header("Block related")]
 	public GameObject _tile;					// Tile object on which the farm is built
 	public string	_blockType = "Ground"; 		// Default
+	[Space]
 
+	[Header("Ref game objects")]
 	public GameObject _City;					
 	public GameObject _Coordinator;
-				   		
+	public RessourcesManagement _CoordRsc;
+	[Space]		   		
 
-	protected GameObject _buildLoadingBarBG;	// background of the building progression bar
-	protected GameObject _buildLoadingBarFront;	// foreground of the building progression bar
 
-	protected bool _buildDone = false;			// Has the building been build yet?
 	static protected float _buildTime = 3.0f;	// Time required to build it
-	protected float _timer = 0.0f;				// Time elapsed since the creation
+	protected int _distanceToCity = 0;
+	protected int _actualProd = 0;
 
-	public int _tradingCapacity = 5;
+
+
 
 
 	// Use this for initialization
 	void Start () {
 		transform.parent = GameObject.Find ("TradingPosts").transform;
 
-		initLoadingBar ();
+		this.GetComponent<CommonBuilding> ().initBuildTime (_buildTime);
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		// While the post is not built, it does not generate any ressources
-		if (!_buildDone) {
-			if (_timer < _buildTime) {
-				_timer += 1.0f * Time.deltaTime;
-				// Update the loading bar
-				if(_timer > _buildTime)
-					_buildLoadingBarFront.transform.localScale = new Vector3 (0.06f, 1.0f, 0.3f);
-				else
-					_buildLoadingBarFront.transform.localScale = new Vector3 (0.06f, 1.0f, (_timer / _buildTime) * 0.3f);
-
-			} else {
-				_buildDone = true;
-				removeLoadingBar ();
-				initFunction ();
-			}
-		}
-	}
-
-
-	/*
-	 * function initLoadingBar()
-	 * Initialize a progression bar upon the building -> get full when the mine is built & functionnal
-	 */
-	void initLoadingBar(){
-		// Create the loading bar's background
-		_buildLoadingBarBG = GameObject.CreatePrimitive (PrimitiveType.Plane);
-		_buildLoadingBarBG.transform.localScale = new Vector3 (0.06f, 1.0f, 0.3f); 
-		_buildLoadingBarBG.transform.position = new Vector3 (this.transform.position.x, this.transform.position.y + 1.0f, this.transform.position.z);
-		_buildLoadingBarBG.transform.Rotate (new Vector3 (0.0f, -45.0f, 90.0f));
-		_buildLoadingBarBG.transform.parent = this.transform;
-
-		// Create the loading bar's progression object
-		_buildLoadingBarFront = GameObject.CreatePrimitive (PrimitiveType.Plane);
-		_buildLoadingBarFront.GetComponent<Renderer> ().material = new Material (Shader.Find ("Standard"));
-		_buildLoadingBarFront.GetComponent<Renderer> ().material.SetColor ("_EmissionColor", new Color (1.0f, (float)(227.0f / 255.0f), 0.0f));
-		_buildLoadingBarFront.GetComponent<Renderer> ().material.EnableKeyword ("_EMISSION");
-
-		_buildLoadingBarFront.transform.localScale = new Vector3 (0.06f, 1.0f, 0.0f); 
-		_buildLoadingBarFront.transform.position = new Vector3 (this.transform.position.x - 0.01f, this.transform.position.y + 1.0f, this.transform.position.z - 0.01f);
-		_buildLoadingBarFront.transform.Rotate (new Vector3 (0.0f, -45.0f, 90.0f));
-		_buildLoadingBarFront.transform.parent = this.transform;
-	}
-
-
-	/*
-	 * function removeLoadingBar()
-	 * Remove the progression bar once the farm is built
-	 */
-	void removeLoadingBar(){
-		Destroy (_buildLoadingBarBG);
-		Destroy (_buildLoadingBarFront);
 
 	}
+		
 
 	/*
 	 * function initFunction()
 	 * Initialize the trading capacity of this post
 	 */
-	void initFunction(){
+	public void initFunction(){
 
 		_City = GameObject.Find ("City");
 		if (_City == null) {
@@ -98,16 +53,86 @@ public class TradingPost : MonoBehaviour {
 		}
 
 		_Coordinator = GameObject.Find ("Coordinator");
+		_CoordRsc = _Coordinator.GetComponent<RessourcesManagement> ();
 
-		// Calculate real amount produced per tick according to the distance between the farm & the city
-		int _distanceToCity = (int) (Mathf.Sqrt( Mathf.Pow(_City.transform.position.x - this.transform.position.x,2)
+		// Calculate real amount traded per tick according to the distance between the farm & the city
+		_distanceToCity = (int) (Mathf.Sqrt( Mathf.Pow(_City.transform.position.x - this.transform.position.x,2)
 			+ Mathf.Pow(_City.transform.position.z - this.transform.position.z,2))/2.0f);
 
 		// If a trading post is near sea, efficiency++ 
 		//TODO
 
-		_Coordinator.GetComponent<RessourcesManagement>()._tradingCapacityPerTick += 
-			(int)(this._tradingCapacity / (_distanceToCity / _Coordinator.GetComponent<RessourcesManagement> ()._MaxDistance));
+		_CoordRsc._tradingCapacityPerTick += 
+			(int)(this._tradingCapacity / (_distanceToCity / _CoordRsc._MaxDistance));
 		_Coordinator.GetComponent<Buildings> ()._isBuildingPost = false;
+		this.GetComponent<CommonBuilding> ()._prodInitDone = true;
+	}
+
+	/*
+	 * function updateProductionRoads()
+	 */
+	void updateProductionRoads(){
+
+		if (this.GetComponent<CommonBuilding> ()._buildDone) {
+			float tmp = (this._tradingCapacity / (_distanceToCity / 0.2f));
+			if (tmp > 0.0f) {
+				if (tmp < 1.0f) {
+					_CoordRsc._Ressources [2]._Production += 1;
+					_actualProd++;
+				} else {
+					_CoordRsc._Ressources [2]._Production += (int)tmp;
+					_actualProd += (int)tmp;
+				}
+			}
+			Debug.Log (" TRADING CAP ROADS NEW " + _tile.name + " - " + tmp);	
+		} else {// If the farm is not done being built yet during the upgrade, start a coroutine so it gets upgraded once done
+			StartCoroutine (waitForBuildToUpgradeRoads ());
+		}
+	}
+
+	/*
+	 * Coroutine waitForBuildToUpgradeEfficency()
+	 */
+	private IEnumerator waitForBuildToUpgradeRoads(){
+
+		while (!this.GetComponent < CommonBuilding> ()._buildDone) {
+			yield return null;
+		}
+		updateProductionRoads ();
+		yield return 0;
+	}
+
+	void updateProductionEfficiency(){
+		// Deliberatly left blank -> global call to buildings, don't need to call farms, mines and woodcutters separatly that way
+	}
+		
+
+	/*
+	 * function updateTradingCapacity()
+	 */
+	public void updateTradingCapacity(){
+		
+		if (this.GetComponent<CommonBuilding> ()._buildDone) {
+			_CoordRsc._tradingCapacityPerTick -= _actualProd;
+			_tradingCapacity = (int)(_tradingCapacity * 1.2f);
+			_actualProd = (int)(_tradingCapacity / (_distanceToCity / _CoordRsc._MaxDistance));
+			_CoordRsc._tradingCapacityPerTick += _actualProd;
+			Debug.Log (" TRADE POST CAP UPG NEW " + _tile.name + " - " + _actualProd);
+
+		} else {// If the post is not done being built yet during the upgrade, start a coroutine so it gets upgraded once done
+			StartCoroutine (waitForBuildToUpgradeCaravans ());
+		}
+	}
+
+	/*
+	 * Coroutine waitForBuildToUpgradeCaravans()
+	 */
+	private IEnumerator waitForBuildToUpgradeCaravans(){
+
+		while (!this.GetComponent < CommonBuilding> ()._buildDone) {
+			yield return null;
+		}
+		updateTradingCapacity ();
+		yield return 0;
 	}
 }

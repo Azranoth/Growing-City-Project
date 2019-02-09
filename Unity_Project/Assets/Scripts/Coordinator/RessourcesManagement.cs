@@ -11,7 +11,7 @@ public class RessourcesManagement : MonoBehaviour {
 	{
 
 		public string _Name;
-		public int _Amount = 25;
+		public int _Amount = 40;
 		public int _Production = 0;
 
 		public Ressource(string name){
@@ -51,15 +51,14 @@ public class RessourcesManagement : MonoBehaviour {
 	public int _goldToFood = 0;				// gold amount to be traded for food
 	public int _goldToWood = 0;				// gold amount to be traded for wood
 
-	public float _tradingTax = 1.25f;		// Tax applied to ressources (mult *)
+	public float _tradingTax = 1.5f;		// Tax applied to ressources (mult *)
 	public int _tradingCapacityPerTick = 0; // Amount of ressources that can be traded in a single tick; more posts -> more capacity
 
 
 	/*
 	 * 0 : food
 	 * 1 : wood
-	 * 2 : stone
-	 * 3 : gold
+	 * 2 : gold
 	 */
 	// Use this for initialization
 	void Start () {
@@ -70,6 +69,7 @@ public class RessourcesManagement : MonoBehaviour {
 		_Ressources[0] = new Ressource("Food");
 		_Ressources[1] = new Ressource("Wood");
 		_Ressources[2] = new Ressource("Gold");
+		_Ressources [2]._Amount = 20;
 
 		_RessourceUsedPerTick [0] = this.GetComponent<PopulationGrowth> ()._Population;
 		_RessourceUsedPerTick [1] = 0;
@@ -242,8 +242,8 @@ public class RessourcesManagement : MonoBehaviour {
 				_woodToFood -= _tradingCapacityPerTick;
 			} else {
 
-				_Ressources [1].UseAmount ( (int)(_foodToWood * _tradingTax) );
-				_Ressources [0]._Amount += _foodToWood;
+				_Ressources [1].UseAmount ( (int)(_woodToFood * _tradingTax) );
+				_Ressources [0]._Amount += _woodToFood;
 				_woodToFood = 0;
 			}
 		}
@@ -258,8 +258,8 @@ public class RessourcesManagement : MonoBehaviour {
 				_goldToFood -= _tradingCapacityPerTick;
 			} else {
 
-				_Ressources [2].UseAmount ( (int)(_foodToWood * _tradingTax) );
-				_Ressources [0]._Amount += _foodToWood;
+				_Ressources [2].UseAmount ( (int)(_goldToFood * _tradingTax) );
+				_Ressources [0]._Amount += _goldToFood;
 				_goldToFood = 0;
 			}
 		}
@@ -273,8 +273,8 @@ public class RessourcesManagement : MonoBehaviour {
 				_goldToWood -= _tradingCapacityPerTick;
 			} else {
 
-				_Ressources [2].UseAmount ( (int)(_foodToWood * _tradingTax) );
-				_Ressources [1]._Amount += _foodToWood;
+				_Ressources [2].UseAmount ( (int)(_goldToWood * _tradingTax) );
+				_Ressources [1]._Amount += _goldToWood;
 				_goldToWood = 0;
 			}
 		}

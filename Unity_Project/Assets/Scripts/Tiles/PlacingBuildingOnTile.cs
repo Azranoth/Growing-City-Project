@@ -40,8 +40,9 @@ public class PlacingBuildingOnTile : MonoBehaviour {
 						_blockedTile = true;
 						// Create the object
 						GameObject _PlacedBuilding = (GameObject)Instantiate (_Coordinator.GetComponent<Buildings> ()._Buildings [0],
-							new Vector3 (transform.position.x, transform.position.y * (4 / 3), transform.position.z),
+							new Vector3 (transform.position.x, -0.3f, transform.position.z),
 							Quaternion.identity);
+						_PlacedBuilding.transform.Rotate (new Vector3 (0.0f, 90.0f, 0.0f));
 						_PlacedBuilding.name = _Coordinator.GetComponent<Buildings> ()._Buildings [0].name;
 
 

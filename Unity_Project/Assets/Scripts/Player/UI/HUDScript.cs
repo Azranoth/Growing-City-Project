@@ -19,7 +19,7 @@ public class HUDScript : MonoBehaviour {
 	public Text _goldPerTick;
 	[Space]
 
-	[Header("Select highligh")]
+	[Header("Select highlight")]
 	// --- Building selection highlight objects
 	public GameObject _selectedFarm;
 	public GameObject _selectedWoodcutter;
@@ -36,6 +36,13 @@ public class HUDScript : MonoBehaviour {
 	public Text _woodToFoodAmount;
 	public Text _goldToFoodAmount;
 	public Text _goldToWoodAmount;
+	public int _valueToAddTrade = 20;
+	public GameObject _buttonValue20;
+	public GameObject _buttonValue50;
+	public GameObject _buttonValue100;
+	public GameObject _buttonValue500;
+	private Color _baseButtonCol;
+	private Color _currentButtonCol;
 	[Space]
 
 	[Header("Menus Buttons")]
@@ -57,6 +64,9 @@ public class HUDScript : MonoBehaviour {
 		_foodPerTick.text = "0";
 		_woodPerTick.text = "0";
 		_goldPerTick.text = "0";
+
+		_baseButtonCol = new Color (1.0f, 1.0f, 1.0f);
+		_currentButtonCol = new Color (0.65f, 0.65f, 0.65f);
 
 	}
 	
@@ -119,9 +129,32 @@ public class HUDScript : MonoBehaviour {
 	 * Update HUD's ressources production texts
 	 */
 	void updateProdDisplay(){
+
 		int prodFood = _coordinator.GetComponent<RessourcesManagement> ()._Ressources [0]._Production - _coordinator.GetComponent<RessourcesManagement> ()._RessourceUsedPerTick [0];
 		int prodWood = _coordinator.GetComponent<RessourcesManagement> ()._Ressources [1]._Production - _coordinator.GetComponent<RessourcesManagement> ()._RessourceUsedPerTick [1];
 		int prodGold = _coordinator.GetComponent<RessourcesManagement> ()._Ressources [2]._Production - _coordinator.GetComponent<RessourcesManagement> ()._RessourceUsedPerTick [2];
+
+		int tradeCap = _coordinator.GetComponent<RessourcesManagement> ()._tradingCapacityPerTick;
+		float tradeTax = _coordinator.GetComponent<RessourcesManagement> ()._tradingTax;
+		if (_coordinator.GetComponent<RessourcesManagement> ()._foodToWood > 0) {			
+			prodFood -= (int)(tradeCap*tradeTax);
+			prodWood += tradeCap;
+		}
+		if (_coordinator.GetComponent<RessourcesManagement> ()._woodToFood > 0) {
+			prodFood += tradeCap;
+			prodWood -= (int)(tradeCap*tradeTax);
+		}
+		if (_coordinator.GetComponent<RessourcesManagement> ()._goldToFood > 0) {
+			prodFood += tradeCap;
+			prodGold -= (int)(tradeCap*tradeTax);
+		}
+
+		if (_coordinator.GetComponent<RessourcesManagement> ()._goldToWood > 0) {
+			prodWood += tradeCap;
+			prodGold -= (int)(tradeCap*tradeTax);
+		}
+
+
 
 		// For each ressource : if the production is lower than the consumption, display it in red color
 		if (prodFood < 0) {			
@@ -162,32 +195,63 @@ public class HUDScript : MonoBehaviour {
 			_tradeMenu.SetActive (false);
 			_coordinator.GetComponent<Buildings> ()._outOfMenu = true;
 			_tradeMenuDisplay = false;
+			this.transform.parent.GetComponent<CameraMovement> ().menuLock (false);
 		} else {
 			_tradeMenu.SetActive (true);
 			_coordinator.GetComponent<Buildings> ()._outOfMenu = false;
 			_tradeMenuDisplay = true;
+			this.transform.parent.GetComponent<CameraMovement> ().menuLock (true);
 		}
 	}
 
 	// -------- TRADE MENU BUTTONS
 	public void onFoodToWoodClicked(){
 
-		_coordinator.GetComponent<RessourcesManagement> ()._foodToWood += 20;
+		_coordinator.GetComponent<RessourcesManagement> ()._foodToWood += _valueToAddTrade;
 	}
 
 	public void onWoodToFoodClicked(){
 
-		_coordinator.GetComponent<RessourcesManagement> ()._woodToFood += 20;
+		_coordinator.GetComponent<RessourcesManagement> ()._woodToFood += _valueToAddTrade;
 	}
 
 	public void onGoldToFoodClicked(){
 
-		_coordinator.GetComponent<RessourcesManagement> ()._goldToFood += 20;
+		_coordinator.GetComponent<RessourcesManagement> ()._goldToFood += _valueToAddTrade;
 	}
 
 	public void onGoldToWoodClicked(){
 
-		_coordinator.GetComponent<RessourcesManagement> ()._goldToWood += 20;
+		_coordinator.GetComponent<RessourcesManagement> ()._goldToWood += _valueToAddTrade;
+	}
+
+	public void on20Clicked(){
+		_valueToAddTrade = 20;
+		_buttonValue20.GetComponent<Image>().color = _currentButtonCol;
+		_buttonValue50.GetComponent<Image>().color = _baseButtonCol;
+		_buttonValue100.GetComponent<Image>().color = _baseButtonCol;
+		_buttonValue500.GetComponent<Image>().color = _baseButtonCol;
+	}
+	public void on50Clicked(){
+		_valueToAddTrade = 50;
+		_buttonValue20.GetComponent<Image>().color = _baseButtonCol;
+		_buttonValue50.GetComponent<Image>().color = _currentButtonCol;
+		_buttonValue100.GetComponent<Image>().color = _baseButtonCol;
+		_buttonValue500.GetComponent<Image>().color = _baseButtonCol;
+	}
+	public void on100Clicked(){
+		_valueToAddTrade = 100;
+		_buttonValue20.GetComponent<Image>().color = _baseButtonCol;
+		_buttonValue50.GetComponent<Image>().color = _baseButtonCol;
+		_buttonValue100.GetComponent<Image>().color= _currentButtonCol;
+		_buttonValue500.GetComponent<Image>().color = _baseButtonCol;
+	}
+	public void on500Clicked(){
+		_valueToAddTrade = 500;
+		_buttonValue20.GetComponent<Image>().color = _baseButtonCol;
+		_buttonValue50.GetComponent<Image>().color = _baseButtonCol;
+		_buttonValue100.GetComponent<Image>().color = _baseButtonCol;
+		_buttonValue500.GetComponent<Image>().color = _currentButtonCol;
 	}
 	// --------
 
@@ -199,15 +263,14 @@ public class HUDScript : MonoBehaviour {
 			_upgradeButton.SetActive (true );
 			_coordinator.GetComponent<Buildings> ()._outOfMenu = true;
 			_upgradeMenuDisplay = false;
+			this.transform.parent.GetComponent<CameraMovement> ().menuLock (false);
 		} else {
 			_upgradeMenu.SetActive (true);
 			_upgradeButton.SetActive (false);
 			_coordinator.GetComponent<Buildings> ()._outOfMenu = false;
 			_upgradeMenuDisplay = true;
+			this.transform.parent.GetComponent<CameraMovement> ().menuLock (true);
 		}
-
-		//TODO
-		//Sendmessage Coord.upgrades
 	}
 
 

@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class ProceduralMapGeneration : MonoBehaviour {
 
+	[Header("Block prefabs")]
 	public GameObject _GroundBlock;
 	public GameObject _WaterBlock;
 	public GameObject _ForestBlock;
+	[Space]
 
 	public GameObject _MapBlocksParent;
+
+	public static int _nbTreesPrefab = 3;
+	public GameObject[] _treePrefabsList = new GameObject[_nbTreesPrefab];
 
 
 	//public float Scale;
@@ -198,14 +203,18 @@ public class ProceduralMapGeneration : MonoBehaviour {
 				
 			if (type == "Forest") {
 				GameObject GeneratedBlock = (GameObject)Instantiate (_ForestBlock, new Vector3 (x * Scale, -1, z * Scale), Quaternion.identity);
+				//GeneratedBlock.transform.Rotate (-90.0f, 0.0f, 90.0f*Random.Range(-3,3)); // Blender export's shit + random Z rotate for diversity
 
 				RelativeTile.GetComponent<PlacingBuildingOnTile> ()._blockType = "Forest";
 				RelativeTile.GetComponent<PlacingBuildingOnTile> ()._Block = GeneratedBlock;
 
 				GeneratedBlock.transform.parent = _MapBlocksParent.transform;
+
+				ForestGeneration(GeneratedBlock);
 			}
 			if (type == "Ground") {
-				GameObject GeneratedBlock = (GameObject)Instantiate (_GroundBlock, new Vector3 (x * Scale, -1, z * Scale), Quaternion.identity);
+				GameObject GeneratedBlock = (GameObject)Instantiate (_GroundBlock, new Vector3 (x * Scale, -1, z * Scale), Quaternion.identity); 
+				GeneratedBlock.transform.Rotate (-90.0f, 0.0f, 90.0f*Random.Range(-3,3)); // Blender export's shit + random Z rotate for diversity
 
 				RelativeTile.GetComponent<PlacingBuildingOnTile> ()._blockType = "Ground";
 				RelativeTile.GetComponent<PlacingBuildingOnTile> ()._Block = GeneratedBlock;
@@ -220,6 +229,40 @@ public class ProceduralMapGeneration : MonoBehaviour {
 
 				GeneratedBlock.transform.parent = _MapBlocksParent.transform;
 			}
+		}
+	}
+
+	private void ForestGeneration(GameObject block){
+
+		float blockPosX = block.transform.localPosition.x;
+		float blockPosZ = block.transform.localPosition.z;
+		float blockSclX = block.transform.localScale.x;
+		float blockSclZ = block.transform.localScale.z;
+
+		//int nbTreesToGenerate =  Random.Range(6, 9);
+		float x,z;
+
+		GameObject emptyChildTrees = new GameObject ();
+		emptyChildTrees.transform.parent = block.transform;
+
+		for (int i = -1; i <= 1; ++i) {
+			for (int j = -1; j <= 1; ++j) {
+
+				x = blockPosX + i*(blockSclX/3.0f);
+				z = blockPosZ + j*(blockSclZ/3.0f);
+
+				x = Random.Range (x - (blockSclX / 6.0f) + (blockSclX / 10.0f), x + (blockSclX / 6.0f) - (blockSclX / 10.0f));
+				z = Random.Range (z - (blockSclZ / 6.0f) + (blockSclX / 10.0f), z + (blockSclZ / 6.0f) - (blockSclX / 10.0f));
+
+				int idTree = Random.Range (0, _nbTreesPrefab);
+
+				GameObject newTree = Instantiate (_treePrefabsList [idTree], new Vector3 (x, -0.5f, z),Quaternion.identity);
+
+				newTree.transform.Rotate(new Vector3(0.0f, Random.Range (0.0f, 360.0f), 0.0f));
+				newTree.transform.parent = emptyChildTrees.transform;
+
+			}
+
 		}
 	}
 
