@@ -9,6 +9,7 @@ public class PopulationGrowth : MonoBehaviour {
 	public static float DENOM_POP_GROWTH = 6.0f;
 
 	public int _Population = 10;
+	public int _dayCount = 1;
 
 	public float _GrowthTimer = GROWTH_DELAY;
 	public float _PplPopTimer = PPL_POP_DELAY;
@@ -55,7 +56,7 @@ public class PopulationGrowth : MonoBehaviour {
 			}
 
 			_nbModels = (1 + (int)(_Population / DENOM_POP_GROWTH));
-				
+			_dayCount++;
 			_GrowthTimer = GROWTH_DELAY;
 		}
 	}

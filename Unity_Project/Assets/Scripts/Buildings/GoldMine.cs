@@ -83,21 +83,9 @@ public class GoldMine : MonoBehaviour {
 			}
 			Debug.Log ("MINE PROD ROADS NEW " + _tile.name + " - " + tmp);	
 		}
-		else{// If the farm is not done being built yet during the upgrade, start a coroutine so it gets upgraded once done
+		else{// If the mine is not done being built yet during the upgrade, start a coroutine so it gets upgraded once done
 			StartCoroutine (waitForBuildToUpgradeRoads ());
 		}
-	}
-
-	/*
-	 * Coroutine waitForBuildToUpgradeRoads()
-	 */
-	private IEnumerator waitForBuildToUpgradeRoads(){
-
-		while (!this.GetComponent < CommonBuilding> ()._buildDone) {
-			yield return null;
-		}
-		updateProductionRoads ();
-		yield return 0;
 	}
 
 	public void updateProductionEfficiency(){
@@ -108,9 +96,26 @@ public class GoldMine : MonoBehaviour {
 			_CoordRsc._Ressources [2]._Production += _actualProd;
 			Debug.Log (" MINE PROD EFFI NEW " + _tile.name + " - " + _actualProd);
 		}
-		else{// If the farm is not done being built yet during the upgrade, start a coroutine so it gets upgraded once done
+		else{// If the mine is not done being built yet during the upgrade, start a coroutine so it gets upgraded once done
 			StartCoroutine (waitForBuildToUpgradeEfficency ());
 		}
+	}
+
+
+	/* ==========================================================================
+	 * COROUTINES FOR UPGRADE FUNCTIONS
+	 */
+
+	/*
+	* Coroutine waitForBuildToUpgradeRoads()
+	*/
+	private IEnumerator waitForBuildToUpgradeRoads(){
+
+		while (!this.GetComponent < CommonBuilding> ()._buildDone) {
+			yield return null;
+		}
+		updateProductionRoads ();
+		yield return 0;
 	}
 
 	/*
@@ -124,4 +129,7 @@ public class GoldMine : MonoBehaviour {
 		updateProductionEfficiency ();
 		yield return 0;
 	}
+
+	// ==========================================================================
+
 }

@@ -88,6 +88,10 @@ public class Upgrades : MonoBehaviour
 		this.GetComponent<RessourcesManagement> ()._tradingTax -= 0.1f;
 	}
 
+	/*
+	 * CaravansUpgrade()
+	 * brief : Increase trading posts trading capacity
+	 */
 	public void CaravansUpgrade(int price){
 		Debug.Log ("Caravans upgrade method called");
 
@@ -107,6 +111,10 @@ public class Upgrades : MonoBehaviour
 		this.GetComponent<Buildings> ()._Buildings [3].GetComponent<TradingPost> ()._tradingCapacity = (int)(this.GetComponent<Buildings> ()._Buildings [3].GetComponent<TradingPost> ()._tradingCapacity * 1.2f);
 	}
 
+	/*
+	 * FarmUpgrade()
+	 * brief : Increase farms productivity
+	 */
 	public void FarmUpgrade(int price){
 		Debug.Log ("Farm upgrade method called");
 

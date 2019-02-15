@@ -94,17 +94,7 @@ public class Farm : MonoBehaviour {
 		}
 	}
 
-	/*
-	 * Coroutine waitForBuildToUpgradeRoads()
-	 */
-	private IEnumerator waitForBuildToUpgradeRoads(){
 
-		while (!this.GetComponent < CommonBuilding> ()._buildDone) {
-			yield return null;
-		}
-		updateProductionRoads ();
-		yield return 0;
-	}
 
 	/*
 	 * function updateProductionEfficiency()
@@ -123,17 +113,7 @@ public class Farm : MonoBehaviour {
 		}
 	}
 
-	/*
-	 * Coroutine waitForBuildToUpgradeEfficency()
-	 */
-	private IEnumerator waitForBuildToUpgradeEfficency(){
 
-		while (!this.GetComponent < CommonBuilding> ()._buildDone) {
-			yield return null;
-		}
-		updateProductionEfficiency ();
-		yield return 0;
-	}
 
 	public void updateFarmProductivity(){
 		if (this.GetComponent<CommonBuilding> ()._buildDone) {
@@ -148,6 +128,39 @@ public class Farm : MonoBehaviour {
 		}
 	}
 
+
+
+	/* ==========================================================================
+	 * COROUTINES FOR UPGRADE FUNCTIONS
+	 */
+
+	/*
+	* Coroutine waitForBuildToUpgradeRoads()
+	*/
+	private IEnumerator waitForBuildToUpgradeRoads(){
+
+		while (!this.GetComponent < CommonBuilding> ()._buildDone) {
+			yield return null;
+		}
+		updateProductionRoads ();
+		yield return 0;
+	}
+
+	/*
+	 * Coroutine waitForBuildToUpgradeEfficency()
+	 */
+	private IEnumerator waitForBuildToUpgradeEfficency(){
+
+		while (!this.GetComponent < CommonBuilding> ()._buildDone) {
+			yield return null;
+		}
+		updateProductionEfficiency ();
+		yield return 0;
+	}
+
+	/*
+	 * Coroutine waitForBuildToUpgradeFarm()
+	 */
 	private IEnumerator waitForBuildToUpgradeFarm(){
 
 		while (!this.GetComponent < CommonBuilding> ()._buildDone) {
@@ -156,4 +169,6 @@ public class Farm : MonoBehaviour {
 		updateFarmProductivity ();
 		yield return 0;
 	}
+	// ==========================================================================
+	 
 }

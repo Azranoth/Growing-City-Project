@@ -11,6 +11,7 @@ public class HUDScript : MonoBehaviour {
 	public Text _woodCount;
 	public Text _goldCount;
 	public Text _popCount;
+	public Text _dayCount;
 	[Space]
 
 	[Header("Tick texts")]
@@ -83,6 +84,8 @@ public class HUDScript : MonoBehaviour {
 		_goldToWoodAmount.text = _coordinator.GetComponent<RessourcesManagement> ()._goldToWood.ToString () + "(" + _coordinator.GetComponent<RessourcesManagement> ()._tradingCapacityPerTick + ")";
 
 		_popCount.text  = _coordinator.GetComponent<PopulationGrowth> ()._Population.ToString ();
+
+		_dayCount.text = "Day " + _coordinator.GetComponent<PopulationGrowth> ()._dayCount.ToString ();
 
 
 		updateBuildingSelection ();

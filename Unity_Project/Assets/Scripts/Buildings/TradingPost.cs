@@ -85,27 +85,10 @@ public class TradingPost : MonoBehaviour {
 				}
 			}
 			Debug.Log (" TRADING CAP ROADS NEW " + _tile.name + " - " + tmp);	
-		} else {// If the farm is not done being built yet during the upgrade, start a coroutine so it gets upgraded once done
+		} else {// If the post is not done being built yet during the upgrade, start a coroutine so it gets upgraded once done
 			StartCoroutine (waitForBuildToUpgradeRoads ());
 		}
-	}
-
-	/*
-	 * Coroutine waitForBuildToUpgradeEfficency()
-	 */
-	private IEnumerator waitForBuildToUpgradeRoads(){
-
-		while (!this.GetComponent < CommonBuilding> ()._buildDone) {
-			yield return null;
-		}
-		updateProductionRoads ();
-		yield return 0;
-	}
-
-	void updateProductionEfficiency(){
-		// Deliberatly left blank -> global call to buildings, don't need to call farms, mines and woodcutters separatly that way
-	}
-		
+	}		
 
 	/*
 	 * function updateTradingCapacity()
@@ -124,6 +107,28 @@ public class TradingPost : MonoBehaviour {
 		}
 	}
 
+
+
+	/* ==========================================================================
+	 * COROUTINES FOR UPGRADE FUNCTIONS
+	 */
+
+	/*
+	* Coroutine waitForBuildToUpgradeEfficency()
+	*/
+	private IEnumerator waitForBuildToUpgradeRoads(){
+
+		while (!this.GetComponent < CommonBuilding> ()._buildDone) {
+			yield return null;
+		}
+		updateProductionRoads ();
+		yield return 0;
+	}
+
+	void updateProductionEfficiency(){
+		// Deliberatly left blank -> global call to buildings, don't need to call farms, mines and woodcutters separatly that way
+	}
+
 	/*
 	 * Coroutine waitForBuildToUpgradeCaravans()
 	 */
@@ -135,4 +140,7 @@ public class TradingPost : MonoBehaviour {
 		updateTradingCapacity ();
 		yield return 0;
 	}
+
+	// ==========================================================================
+
 }

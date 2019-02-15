@@ -87,21 +87,9 @@ public class WoodcutterCamp : MonoBehaviour {
 		}
 		Debug.Log (" WOODCUTTER PROD ROADS NEW " + _tile.name + " - " + tmp);
 		} 
-		else {// If the farm is not done being built yet during the upgrade, start a coroutine so it gets upgraded once done
+		else {// If the camp is not done being built yet during the upgrade, start a coroutine so it gets upgraded once done
 			StartCoroutine (waitForBuildToUpgradeRoads ());
 		}
-	}
-
-	/*
-	 * Coroutine waitForBuildToUpgradeRoads()
-	 */
-	private IEnumerator waitForBuildToUpgradeRoads(){
-
-		while (!this.GetComponent < CommonBuilding> ()._buildDone) {
-			yield return null;
-		}
-		updateProductionRoads ();
-		yield return 0;
 	}
 
 	public void updateProductionEfficiency(){
@@ -111,9 +99,26 @@ public class WoodcutterCamp : MonoBehaviour {
 			_actualProd = (int)(_production / (_distanceToCity / _CoordRsc._MaxDistance));
 			_CoordRsc._Ressources [1]._Production += _actualProd;
 			Debug.Log (" WOODCUTTER PROD EFFI NEW " + _tile.name + " - " + _actualProd);	
-		} else {// If the farm is not done being built yet during the upgrade, start a coroutine so it gets upgraded once done
+		} else {// If the camp is not done being built yet during the upgrade, start a coroutine so it gets upgraded once done
 			StartCoroutine (waitForBuildToUpgradeEfficency ());
 		}
+	}
+		
+
+	/* ==========================================================================
+	 * COROUTINES FOR UPGRADE FUNCTIONS
+	 */
+
+	/*
+	* Coroutine waitForBuildToUpgradeRoads()
+	*/
+	private IEnumerator waitForBuildToUpgradeRoads(){
+
+		while (!this.GetComponent < CommonBuilding> ()._buildDone) {
+			yield return null;
+		}
+		updateProductionRoads ();
+		yield return 0;
 	}
 
 	/*
@@ -127,5 +132,8 @@ public class WoodcutterCamp : MonoBehaviour {
 		updateProductionEfficiency ();
 		yield return 0;
 	}
+
+	// ==========================================================================
+
 
 }
