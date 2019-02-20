@@ -2,6 +2,8 @@
 
 ##Growing City Project
 
+[Game demo download](https://www.dropbox.com/s/a89yp3p4e5z50va/BUILD.zip?dl=0)
+
 Gamdev project : survival/management game
 
 Brief : Player must build and manage a city from scratch, through constructing buildings and collecting ressources.
