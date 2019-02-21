@@ -1,8 +1,8 @@
-(FR below)
-
-##Growing City Project
+# ONGOING PROJECT - Growing City Project
 
 [Game demo download](https://www.dropbox.com/s/a89yp3p4e5z50va/BUILD.zip?dl=0)
+
+(FR below)
 
 Gamdev project : survival/management game
 
